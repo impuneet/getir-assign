@@ -1,13 +1,21 @@
 /* eslint-disable no-console */
 const mongoose = require('mongoose');
 const app = require('./app');
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 let server;
-
-mongoose.connect(process.env.MONGOOSE_URL, process.env.MONGOOSE_OPTIONS).then(() => {
+let options = {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}
+mongoose.connect(process.env.MONGOOSE_URL, options).then(() => {
     console.log('Connected to MongoDB');
-    server = app.listen(process.env.MONGOOSE_PORT, () => {
-      console.log(`Listening to port ${process.env.MONGOOSE_PORT}`);
+    server = app.listen(process.env.PORT, () => {
+      console.log(`Listening to port ${process.env.PORT}`);
     });
   });
 
