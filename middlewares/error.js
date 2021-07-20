@@ -16,12 +16,12 @@ const errorConverter = (err, req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
-  console.log(err);
+  console.log(err.message);
   const errorObject = {};
   errorObject.success = false;
   errorObject.code = 1; // 1 means fail
   errorObject.msg = 'Fail';
-  res.locals.errorMessage = err.message;
+  errorObject.internalMessage = err.message;
   statusCode = err.status ? err.status : 500;
   res.status(statusCode).send(errorObject);
 };
