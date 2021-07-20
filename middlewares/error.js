@@ -16,20 +16,14 @@ const errorConverter = (err, req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
-  if (process.env.ENV === 'production' && !err.isOperational) {
-    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-    message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
-  }
-
+  console.log(err);
+  const errorObject = {};
+  errorObject.success = false;
+  errorObject.code = 1; // 1 means fail
+  errorObject.msg = 'Fail';
   res.locals.errorMessage = err.message;
-
-  const response = {
-    code: statusCode,
-    message,
-    ...(process.env.ENV === 'development' && { stack: err.stack }),
-  };
-
-  res.status(statusCode).send(response);
+  statusCode = err.status ? err.status : 500;
+  res.status(statusCode).send(errorObject);
 };
 
 module.exports = {
